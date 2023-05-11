@@ -16,12 +16,18 @@ Created on Thu Dec  9 21:48:45 2021
 # *******************************************************************************
 
 """
-
+import flask
 import dash
 from dash import html, dcc
 import dash_bootstrap_components as dbc
 
-app = dash.Dash(__name__, use_pages=True, external_stylesheets=[dbc.themes.SPACELAB])
+server = flask.Flask(__name__)
+
+@server.route('/')
+def index():
+    return 'Hello Flask app'
+
+app = dash.Dash(__name__,server=server, use_pages=True, routes_pathname_prefix='/dash/', external_stylesheets=[dbc.themes.SPACELAB])
 sidebar = dbc.Nav(
             [
                 dbc.NavLink(
@@ -63,4 +69,4 @@ app.layout = dbc.Container([
 ], fluid=True)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run_server(debug=True)
